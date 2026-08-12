@@ -47,7 +47,7 @@ export function Packages() {
   return (
     <section id="packages" className="cv-auto bg-bg px-5 py-20 md:px-8 md:py-28">
       <div className="mx-auto max-w-6xl">
-        <Reveal>
+        <Reveal className="mx-line">
           <p className="text-sm font-semibold uppercase tracking-[0.14em] text-sea">
             Transparent packages
           </p>
@@ -60,11 +60,11 @@ export function Packages() {
           </p>
         </Reveal>
 
-        <Stagger className="mt-14 grid gap-6 lg:grid-cols-3" delay={0.05}>
+        <Stagger className="mt-14 grid gap-6 lg:grid-cols-3" delay={0.06}>
           {packages.map((pkg) => (
             <StaggerItem key={pkg.name}>
               <article
-                className={`flex h-full flex-col border p-7 ${
+                className={`mx-card flex h-full flex-col border p-7 ${
                   pkg.featured
                     ? "border-sea bg-bg-deep text-white"
                     : "border-line bg-surface text-ink"
@@ -111,11 +111,11 @@ export function Packages() {
                   )}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`mt-8 inline-flex items-center justify-center rounded-md px-4 py-3 text-sm font-semibold transition ${
-                    pkg.featured
-                      ? "bg-accent text-white hover:bg-accent-hover"
-                      : "bg-sea text-white hover:opacity-90"
-                  }`}
+className={`mt-8 inline-flex items-center justify-center rounded-md px-4 py-3 text-sm font-semibold btn-press ${
+                  pkg.featured
+                    ? "bg-accent text-white hover:bg-accent-hover"
+                    : "bg-sea text-white hover:opacity-90"
+                }`}
                 >
                   Ask about this package
                 </a>

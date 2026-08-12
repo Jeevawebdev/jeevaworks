@@ -34,7 +34,7 @@ export function Services() {
   return (
     <section id="services" className="cv-auto bg-bg px-5 py-20 md:px-8 md:py-28">
       <div className="mx-auto max-w-6xl">
-        <Reveal>
+        <Reveal className="mx-line">
           <p className="text-sm font-semibold uppercase tracking-[0.14em] text-sea">
             What I build
           </p>
@@ -47,10 +47,10 @@ export function Services() {
           </p>
         </Reveal>
 
-        <Stagger className="mt-14 grid gap-8 sm:grid-cols-2" delay={0.04}>
+        <Stagger className="mt-14 grid gap-8 sm:grid-cols-2" delay={0.05}>
           {services.map((item, i) => (
             <StaggerItem key={item.title}>
-              <article className="overflow-hidden border border-line bg-surface">
+              <article className="mx-card overflow-hidden border border-line bg-surface">
                 <div className="relative aspect-[16/10] overflow-hidden bg-sea-soft">
                   <Image
                     src={item.image}
@@ -58,7 +58,7 @@ export function Services() {
                     fill
                     sizes="(max-width: 768px) 100vw, 50vw"
                     className="object-cover"
-                    quality={60}
+                    quality={62}
                     loading="lazy"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />

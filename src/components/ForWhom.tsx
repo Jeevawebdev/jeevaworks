@@ -15,7 +15,7 @@ export function ForWhom() {
   return (
     <section className="cv-auto border-y border-line bg-surface px-5 py-12 md:px-8 md:py-16">
       <div className="mx-auto max-w-6xl">
-        <Reveal>
+        <Reveal className="mx-line">
           <p className="text-sm font-semibold uppercase tracking-[0.14em] text-sea">
             Built for local businesses
           </p>

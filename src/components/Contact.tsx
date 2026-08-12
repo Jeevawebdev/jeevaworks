@@ -27,7 +27,7 @@ export function Contact() {
   return (
     <section id="contact" className="cv-auto bg-bg px-5 py-20 md:px-8 md:py-28">
       <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-2">
-        <Reveal>
+        <Reveal className="mx-line">
           <p className="text-sm font-semibold uppercase tracking-[0.14em] text-sea">
             Contact
           </p>
@@ -85,7 +85,7 @@ export function Contact() {
         <FadeScale delay={0.1}>
         <form
           onSubmit={onSubmit}
-          className="border border-line bg-surface p-6 md:p-8"
+          className="mx-card border border-line bg-surface p-6 md:p-8"
         >
           <label className="block text-sm font-medium text-ink">
             Your name
@@ -131,7 +131,7 @@ export function Contact() {
           </label>
           <button
             type="submit"
-            className="mt-7 w-full rounded-md bg-whatsapp px-4 py-3.5 text-base font-semibold text-white transition hover:opacity-90"
+            className="mt-7 w-full rounded-md bg-whatsapp px-4 py-3.5 text-base font-semibold text-white btn-press hover:opacity-90"
           >
             Continue on WhatsApp
           </button>

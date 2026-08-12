@@ -5,36 +5,57 @@ import {
   ReactNode,
   useEffect,
   useRef,
-  useState,
   type CSSProperties,
 } from "react";
 
-function useInViewOnce<T extends HTMLElement>(rootMargin = "0px 0px -6% 0px") {
-  const ref = useRef<T | null>(null);
-  const [shown, setShown] = useState(false);
+type Variant = "up" | "scale" | "left" | "right" | "media" | "fade";
+
+let sharedObserver: IntersectionObserver | null = null;
+
+function getObserver() {
+  if (typeof window === "undefined") return null;
+  if (sharedObserver) return sharedObserver;
+
+  sharedObserver = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue;
+        const el = entry.target as HTMLElement;
+        requestAnimationFrame(() => {
+          el.classList.add("is-in");
+        });
+        sharedObserver?.unobserve(el);
+
+        const done = () => el.classList.add("mx-done");
+        el.addEventListener("transitionend", done, { once: true });
+        // Fallback if no transition fires
+        window.setTimeout(done, 1200);
+      }
+    },
+    { rootMargin: "0px 0px -10% 0px", threshold: 0.14 },
+  );
+
+  return sharedObserver;
+}
+
+function useReveal(enabled = true) {
+  const ref = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const el = ref.current;
-    if (!el || shown) return;
+    if (!el || !enabled) return;
 
-    let frame = 0;
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry.isIntersecting) return;
-        frame = requestAnimationFrame(() => setShown(true));
-        io.disconnect();
-      },
-      { rootMargin, threshold: 0.08 },
-    );
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      el.classList.add("is-in", "mx-done");
+      return;
+    }
 
-    io.observe(el);
-    return () => {
-      cancelAnimationFrame(frame);
-      io.disconnect();
-    };
-  }, [shown, rootMargin]);
+    const io = getObserver();
+    io?.observe(el);
+    return () => io?.unobserve(el);
+  }, [enabled]);
 
-  return { ref, shown };
+  return ref;
 }
 
 export function MotionProvider({ children }: { children: ReactNode }) {
@@ -45,18 +66,20 @@ export function Reveal({
   children,
   className = "",
   delay = 0,
+  variant = "up",
 }: {
   children: ReactNode;
   className?: string;
   delay?: number;
+  variant?: Variant;
 }) {
-  const { ref, shown } = useInViewOnce<HTMLDivElement>();
+  const ref = useReveal();
 
   return (
     <div
       ref={ref}
-      className={`reveal-el ${shown ? "is-in" : ""} ${className}`}
-      style={{ transitionDelay: `${delay}s` } as CSSProperties}
+      className={`mx mx-${variant} ${className}`}
+      style={{ "--mx-delay": `${delay}s` } as CSSProperties}
     >
       {children}
     </div>
@@ -72,16 +95,26 @@ export function FadeScale({
   className?: string;
   delay?: number;
 }) {
-  const { ref, shown } = useInViewOnce<HTMLDivElement>();
-
   return (
-    <div
-      ref={ref}
-      className={`reveal-scale ${shown ? "is-in" : ""} ${className}`}
-      style={{ transitionDelay: `${delay}s` } as CSSProperties}
-    >
+    <Reveal className={className} delay={delay} variant="scale">
       {children}
-    </div>
+    </Reveal>
+  );
+}
+
+export function MediaReveal({
+  children,
+  className = "",
+  delay = 0,
+}: {
+  children: ReactNode;
+  className?: string;
+  delay?: number;
+}) {
+  return (
+    <Reveal className={className} delay={delay} variant="media">
+      {children}
+    </Reveal>
   );
 }
 
@@ -94,18 +127,18 @@ export function Stagger({
   className?: string;
   delay?: number;
 }) {
-  const { ref, shown } = useInViewOnce<HTMLDivElement>("0px 0px -4% 0px");
+  const ref = useReveal();
 
   return (
     <div
       ref={ref}
-      className={`stagger ${shown ? "is-in" : ""} ${className}`}
+      className={`mx-stagger ${className}`}
       style={{ "--stagger-base": `${delay}s` } as CSSProperties}
     >
       {Children.map(children, (child, i) => (
         <div
-          className="stagger-item"
-          style={{ transitionDelay: `calc(var(--stagger-base) + ${i * 0.07}s)` }}
+          className="mx-item"
+          style={{ "--i": i } as CSSProperties}
         >
           {child}
         </div>
@@ -114,7 +147,6 @@ export function Stagger({
   );
 }
 
-/** Kept for API compatibility — Stagger wraps children already */
 export function StaggerItem({
   children,
   className = "",

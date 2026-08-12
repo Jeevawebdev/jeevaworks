@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { site } from "@/lib/site";
-import { FadeScale, Reveal, Stagger, StaggerItem } from "@/components/motion";
+import { MediaReveal, Reveal, Stagger, StaggerItem } from "@/components/motion";
 
 const trust = [
   "Chennai-based — easy to talk to in English or Tamil",
@@ -17,24 +17,22 @@ export function About() {
       className="cv-auto overflow-hidden bg-bg-deep px-5 py-20 text-white md:px-8 md:py-28"
     >
       <div className="mx-auto grid max-w-6xl gap-12 md:grid-cols-[0.9fr_1.1fr] md:items-center">
-        <FadeScale>
-          <div className="relative mx-auto max-w-md overflow-hidden rounded-[2rem] border border-white/15 bg-white/5">
-            <div className="relative aspect-[4/5]">
-              <Image
-                src="/images/jeeva.webp"
-                alt={`${site.name} portrait`}
-                fill
-                sizes="(max-width: 768px) 80vw, 360px"
-                className="object-cover object-[center_15%]"
-                quality={75}
-                loading="lazy"
-              />
-            </div>
+        <MediaReveal className="relative mx-auto max-w-md overflow-hidden rounded-[2rem] border border-white/15 bg-white/5">
+          <div className="relative aspect-[4/5]">
+            <Image
+              src="/images/jeeva.webp"
+              alt={`${site.name} portrait`}
+              fill
+              sizes="(max-width: 768px) 80vw, 360px"
+              className="object-cover object-[center_15%]"
+              quality={78}
+              loading="lazy"
+            />
           </div>
-        </FadeScale>
+        </MediaReveal>
 
         <div>
-          <Reveal>
+          <Reveal className="mx-line" variant="right">
             <p className="text-sm font-semibold uppercase tracking-[0.14em] text-white/55">
               About
             </p>
@@ -51,7 +49,7 @@ export function About() {
             </p>
           </Reveal>
 
-          <Stagger className="mt-8 space-y-0" delay={0.06}>
+          <Stagger className="mt-8 space-y-0" delay={0.08}>
             {trust.map((item) => (
               <StaggerItem key={item}>
                 <p className="border-b border-white/10 py-4 text-sm leading-relaxed text-white/85 md:text-base">

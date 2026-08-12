@@ -9,10 +9,12 @@ import { About } from "@/components/About";
 import { Contact } from "@/components/Contact";
 import { Footer } from "@/components/Footer";
 import { WhatsAppFab } from "@/components/WhatsAppFab";
+import { ScrollProgress } from "@/components/ScrollProgress";
 
 export default function Home() {
   return (
     <>
+      <ScrollProgress />
       <Header />
       <main className="flex-1">
         <Hero />

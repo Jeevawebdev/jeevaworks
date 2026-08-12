@@ -14,7 +14,9 @@
   --sea-soft: #e6f3f1;
   --gold: #c9a227;
   --whatsapp: #128c7e;
-  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-soft: cubic-bezier(0.33, 1, 0.68, 1);
+  --mx-duration: 0.85s;
 }
 
 @theme inline {
@@ -57,65 +59,253 @@ body {
   color: var(--ink);
 }
 
-/* Compositor-friendly reveals — opacity + translate3d only */
-.reveal-el,
-.reveal-scale,
-.stagger-item {
+.cv-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 760px;
+}
+
+/* ——— Shared reveal engine (GPU: opacity + transform only) ——— */
+.mx,
+.mx-item {
   opacity: 0;
-  transform: translate3d(0, 14px, 0);
   transition:
-    opacity 0.5s var(--ease-out),
-    transform 0.5s var(--ease-out);
+    opacity var(--mx-duration) var(--ease-out),
+    transform var(--mx-duration) var(--ease-out);
+  transition-delay: var(--mx-delay, 0s);
   backface-visibility: hidden;
+  transform: translateZ(0);
 }
 
-.reveal-scale {
-  transform: translate3d(0, 12px, 0) scale(0.985);
+.mx:not(.mx-done),
+.mx-stagger:not(.mx-done) .mx-item {
+  will-change: transform, opacity;
 }
 
-.reveal-el.is-in,
-.reveal-scale.is-in,
-.stagger.is-in > .stagger-item {
+.mx.mx-done,
+.mx-stagger.mx-done .mx-item {
+  will-change: auto;
+}
+
+.mx-up {
+  transform: translate3d(0, 32px, 0);
+}
+
+.mx-fade {
+  transform: translate3d(0, 10px, 0);
+}
+
+.mx-scale {
+  transform: translate3d(0, 28px, 0) scale(0.94);
+}
+
+.mx-left {
+  transform: translate3d(-36px, 0, 0);
+}
+
+.mx-right {
+  transform: translate3d(36px, 0, 0);
+}
+
+.mx-media {
+  opacity: 0.35;
+  transform: translate3d(0, 18px, 0) scale(1.06);
+  clip-path: inset(10% 8% 10% 8%);
+  transition:
+    opacity 0.85s var(--ease-out),
+    transform 0.85s var(--ease-out),
+    clip-path 1s var(--ease-out);
+  transition-delay: var(--mx-delay, 0s);
+}
+
+.mx.is-in {
   opacity: 1;
   transform: translate3d(0, 0, 0) scale(1);
 }
 
-.cv-auto {
-  content-visibility: auto;
-  contain-intrinsic-size: auto 720px;
+.mx-media.is-in {
+  clip-path: inset(0 0 0 0);
 }
 
-.hero-in {
-  animation: hero-in 0.6s var(--ease-out) both;
+.mx-stagger .mx-item {
+  opacity: 0;
+  transform: translate3d(0, 28px, 0);
+  transition-delay: calc(var(--stagger-base, 0s) + (var(--i, 0) * 90ms));
 }
 
-.hero-in-delay-1 {
-  animation-delay: 0.08s;
+.mx-stagger.is-in .mx-item {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
 }
 
-.hero-in-delay-2 {
-  animation-delay: 0.16s;
+/* ——— Accent line under section titles ——— */
+.mx-line {
+  position: relative;
 }
 
-.hero-in-delay-3 {
+.mx-line::after {
+  content: "";
+  display: block;
+  width: 0;
+  height: 2px;
+  margin-top: 1rem;
+  background: linear-gradient(90deg, var(--accent), var(--sea));
+  transition: width 0.9s var(--ease-out) 0.15s;
+}
+
+.mx-line.is-in::after {
+  width: min(7rem, 40%);
+}
+
+/* ——— Cards: lift without animating box-shadow on scroll ——— */
+.mx-card {
+  position: relative;
+  isolation: isolate;
+  transition: transform 0.35s var(--ease-soft);
+  contain: layout paint;
+}
+
+.mx-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  box-shadow: 0 22px 50px rgba(20, 32, 31, 0.14);
+  opacity: 0;
+  transition: opacity 0.35s var(--ease-soft);
+  pointer-events: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .mx-card:hover {
+    transform: translate3d(0, -6px, 0);
+  }
+
+  .mx-card:hover::after {
+    opacity: 1;
+  }
+}
+
+/* ——— Hero ——— */
+.hero-stage {
+  animation: hero-stage 1.1s var(--ease-out) both;
+}
+
+.hero-copy > * {
+  opacity: 0;
+  transform: translate3d(0, 22px, 0);
+  animation: hero-in 0.8s var(--ease-out) both;
+}
+
+.hero-copy > *:nth-child(1) {
+  animation-delay: 0.05s;
+}
+.hero-copy > *:nth-child(2) {
+  animation-delay: 0.14s;
+}
+.hero-copy > *:nth-child(3) {
   animation-delay: 0.24s;
+}
+.hero-copy > *:nth-child(4) {
+  animation-delay: 0.34s;
+}
+.hero-copy > *:nth-child(5) {
+  animation-delay: 0.42s;
+}
+
+.hero-portrait {
+  opacity: 0;
+  transform: translate3d(0, 40px, 0) scale(0.92);
+  animation: hero-portrait-in 1s var(--ease-out) 0.2s both;
+}
+
+.hero-float {
+  animation: portrait-float 6.5s var(--ease-soft) 1.35s infinite;
+}
+
+.hero-bg-zoom {
+  transform: scale(1.08);
+  animation: hero-bg-zoom 18s var(--ease-soft) forwards;
 }
 
 @keyframes hero-in {
-  from {
-    opacity: 0;
-    transform: translate3d(0, 16px, 0);
-  }
   to {
     opacity: 1;
     transform: translate3d(0, 0, 0);
   }
 }
 
+@keyframes hero-portrait-in {
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes portrait-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -8px, 0);
+  }
+}
+
+@keyframes hero-bg-zoom {
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes hero-stage {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ——— Scroll progress (CSS scroll-timeline, zero JS) ——— */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 60;
+  height: 2px;
+  width: 100%;
+  transform-origin: 0 50%;
+  background: linear-gradient(90deg, var(--accent), var(--sea));
+  transform: scaleX(0);
+  pointer-events: none;
+}
+
+@supports (animation-timeline: scroll()) {
+  .scroll-progress {
+    animation: scroll-progress linear;
+    animation-timeline: scroll(root);
+  }
+}
+
+@keyframes scroll-progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* ——— FAB ——— */
+.fab-in {
+  animation: fab-in 0.55s var(--ease-out) 0.7s both;
+}
+
 @keyframes fab-in {
   from {
     opacity: 0;
-    transform: translate3d(0, 10px, 0) scale(0.96);
+    transform: translate3d(0, 14px, 0) scale(0.92);
   }
   to {
     opacity: 1;
@@ -123,8 +313,22 @@ body {
   }
 }
 
-.fab-in {
-  animation: fab-in 0.45s var(--ease-out) 0.5s both;
+.btn-press {
+  transition:
+    transform 0.2s var(--ease-soft),
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.btn-press:active {
+  transform: scale(0.97);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .btn-press:hover {
+    transform: translate3d(0, -1px, 0);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -132,14 +336,25 @@ body {
     scroll-behavior: auto;
   }
 
-  .reveal-el,
-  .reveal-scale,
-  .stagger-item,
-  .hero-in,
-  .fab-in {
+  .mx,
+  .mx-item,
+  .hero-copy > *,
+  .hero-portrait,
+  .hero-float,
+  .hero-bg-zoom,
+  .hero-stage,
+  .fab-in,
+  .scroll-progress {
     opacity: 1 !important;
     transform: none !important;
+    clip-path: none !important;
     animation: none !important;
+    transition: none !important;
+    will-change: auto !important;
+  }
+
+  .mx-line::after {
+    width: min(7rem, 40%) !important;
     transition: none !important;
   }
 }
