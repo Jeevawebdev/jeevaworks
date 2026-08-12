@@ -1,6 +1,7 @@
 import { Header } from "@/components/Header";
 import { Hero } from "@/components/Hero";
 import { ForWhom } from "@/components/ForWhom";
+import { QuickQuotes } from "@/components/QuickQuotes";
 import { VisualStory } from "@/components/VisualStory";
 import { Services } from "@/components/Services";
 import { HowItWorks } from "@/components/HowItWorks";
@@ -19,6 +20,7 @@ export default function Home() {
       <main className="flex-1">
         <Hero />
         <ForWhom />
+        <QuickQuotes />
         <VisualStory />
         <Services />
         <HowItWorks />

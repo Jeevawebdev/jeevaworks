@@ -1,7 +1,16 @@
+"use client";
+
 import Image from "next/image";
 import { site, whatsappLink } from "@/lib/site";
+import { useLang } from "@/lib/i18n";
 
 export function Hero() {
+  const { t, lang } = useLang();
+  const waMsg =
+    lang === "ta"
+      ? "வணக்கம் ஜீவா, என் வணிகத்திற்கு வலைத்தளம் / ஆப் வேண்டும். jeevaworks.in இல் பார்த்தேன்."
+      : "Hi Jeeva, I need a website for my business in Chennai / Tamil Nadu.";
+
   return (
     <section
       id="top"
@@ -23,35 +32,32 @@ export function Hero() {
 
       <div className="relative z-10 mx-auto grid min-h-[100svh] max-w-6xl items-end gap-10 px-5 pb-16 pt-28 md:grid-cols-[1.15fr_0.85fr] md:items-center md:px-8 md:pb-20 md:pt-28">
         <div className="hero-copy">
-          <p className="text-sm font-medium tracking-wide text-white/75 md:text-base">
-            வணக்கம் · Based in {site.location}
+          <p className="lang-copy text-sm font-medium tracking-wide text-white/75 md:text-base">
+            {t.hero.greeting}
           </p>
           <h1 className="mt-4 max-w-3xl font-[family-name:var(--font-display)] text-[clamp(2.75rem,8vw,5.25rem)] font-semibold leading-[0.95] tracking-tight">
             {site.brand}
           </h1>
-          <p className="mt-5 max-w-xl text-lg leading-relaxed text-white/88 md:text-xl">
-            Simple websites and apps that help shops, clinics, and local
-            businesses get found, get trusted, and get more customers.
+          <p className="lang-copy mt-5 max-w-xl text-lg leading-relaxed text-white/88 md:text-xl">
+            {t.hero.body}
           </p>
           <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
             <a
-              href={whatsappLink(
-                "Hi Jeeva, I need a website for my business in Chennai / Tamil Nadu.",
-              )}
+              href={whatsappLink(waMsg)}
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-press inline-flex items-center justify-center rounded-md bg-accent px-6 py-3.5 text-base font-semibold text-white hover:bg-accent-hover"
+              className="btn-press lang-copy inline-flex items-center justify-center rounded-md bg-accent px-6 py-3.5 text-base font-semibold text-white hover:bg-accent-hover"
             >
-              Message on WhatsApp
+              {t.hero.ctaWhatsapp}
             </a>
             <a
               href="#packages"
-              className="btn-press inline-flex items-center justify-center rounded-md border border-white/30 px-6 py-3.5 text-base font-medium text-white hover:bg-white/10"
+              className="btn-press lang-copy inline-flex items-center justify-center rounded-md border border-white/30 px-6 py-3.5 text-base font-medium text-white hover:bg-white/10"
             >
-              See packages
+              {t.hero.ctaPackages}
             </a>
           </div>
-          <p className="mt-6 text-sm text-white/60">Serving {site.serving}</p>
+          <p className="lang-copy mt-6 text-sm text-white/60">{t.hero.serving}</p>
         </div>
 
         <div className="hero-portrait relative mx-auto w-full max-w-sm md:max-w-none">
@@ -70,9 +76,7 @@ export function Hero() {
                 <p className="font-[family-name:var(--font-display)] text-xl font-semibold">
                   {site.name}
                 </p>
-                <p className="text-sm text-white/75">
-                  Your local web & app partner
-                </p>
+                <p className="lang-copy text-sm text-white/75">{t.hero.role}</p>
               </div>
             </div>
           </div>
