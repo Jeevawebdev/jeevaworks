@@ -1,36 +1,71 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# JeevaWorks — jeevaworks.in
 
-## Getting Started
+Freelance portfolio for Chennai & Tamil Nadu local businesses.
 
-First, run the development server:
+## Local preview
 
 ```bash
+cd portfolio
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Deploy free on Vercel + attach jeevaworks.in (HTTPS)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Vercel free Hobby plan gives hosting + automatic SSL (padlock / HTTPS).
 
-## Learn More
+### 1. Push this project to GitHub
 
-To learn more about Next.js, take a look at the following resources:
+Create a new GitHub repo, then from `portfolio/`:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+git remote add origin https://github.com/YOUR_USERNAME/jeevaworks.git
+git branch -M main
+git push -u origin main
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+(If this folder already has git history from create-next-app, you can use that.)
 
-## Deploy on Vercel
+### 2. Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. Go to [vercel.com](https://vercel.com) → Sign up with GitHub (free).
+2. **Add New Project** → import the `jeevaworks` repo.
+3. Framework: **Next.js** (auto-detected). Leave build settings default.
+4. Click **Deploy**. Wait for the `*.vercel.app` URL.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### 3. Attach your domain `jeevaworks.in`
+
+1. In the Vercel project → **Settings** → **Domains**.
+2. Add `jeevaworks.in` and `www.jeevaworks.in`.
+3. Vercel shows DNS records. At your domain registrar (where you bought the domain), set:
+
+**Option A — apex + www (recommended)**
+
+| Type  | Name | Value                         |
+|-------|------|-------------------------------|
+| A     | @    | `76.76.21.21`                 |
+| CNAME | www  | `cname.vercel-dns.com`        |
+
+**Option B — if registrar supports ALIAS/ANAME for root**
+
+| Type  | Name | Value                  |
+|-------|------|------------------------|
+| ALIAS | @    | `cname.vercel-dns.com` |
+| CNAME | www  | `cname.vercel-dns.com` |
+
+4. Wait for DNS (often 5–60 minutes; sometimes up to 24–48h).
+5. In Vercel Domains, status should become **Valid**. HTTPS certificate is issued **automatically** — no extra cost.
+
+### 4. Redirect www ↔ apex
+
+In Vercel Domains, set `jeevaworks.in` as primary and redirect `www` to it (or the reverse). One click in the Domains UI.
+
+## Contact details used on the site
+
+- Phone / WhatsApp: +91 9344539265  
+- Email: jeevawebdev1@gmail.com  
+- LinkedIn: linkedin.com/in/jeevawebd  
+
+Edit `src/lib/site.ts` and package prices in `src/components/Packages.tsx` anytime.
