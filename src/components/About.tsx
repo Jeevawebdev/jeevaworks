@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { site } from "@/lib/site";
-import { MediaReveal, Reveal, Stagger, StaggerItem } from "@/components/motion";
+import { Reveal, Stagger, StaggerItem } from "@/components/motion";
 
 const trust = [
   "Chennai-based — easy to talk to in English or Tamil",
@@ -14,22 +14,21 @@ export function About() {
   return (
     <section
       id="about"
-      className="cv-auto overflow-hidden bg-bg-deep px-5 py-20 text-white md:px-8 md:py-28"
+      className="overflow-hidden bg-bg-deep px-5 py-20 text-white md:px-8 md:py-28"
     >
       <div className="mx-auto grid max-w-6xl gap-12 md:grid-cols-[0.9fr_1.1fr] md:items-center">
-        <MediaReveal className="relative mx-auto max-w-md overflow-hidden rounded-[2rem] border border-white/15 bg-white/5">
-          <div className="relative aspect-[4/5]">
+        <Reveal variant="scale" className="relative mx-auto w-full max-w-md">
+          <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[2rem] border border-white/15 bg-[#124f4a]">
             <Image
               src="/images/jeeva.webp"
               alt={`${site.name} portrait`}
               fill
-              sizes="(max-width: 768px) 80vw, 360px"
+              sizes="(max-width: 768px) 90vw, 400px"
               className="object-cover object-[center_15%]"
-              quality={78}
-              loading="lazy"
+              quality={85}
             />
           </div>
-        </MediaReveal>
+        </Reveal>
 
         <div>
           <Reveal className="mx-line" variant="right">

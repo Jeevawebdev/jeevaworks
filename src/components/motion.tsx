@@ -52,7 +52,19 @@ function useReveal(enabled = true) {
 
     const io = getObserver();
     io?.observe(el);
-    return () => io?.unobserve(el);
+
+    // Safety: never leave content invisible if IO misses (e.g. content-visibility)
+    const fallback = window.setTimeout(() => {
+      if (!el.classList.contains("is-in")) {
+        el.classList.add("is-in", "mx-done");
+        io?.unobserve(el);
+      }
+    }, 1800);
+
+    return () => {
+      window.clearTimeout(fallback);
+      io?.unobserve(el);
+    };
   }, [enabled]);
 
   return ref;
