@@ -45,7 +45,7 @@ const packages = [
 
 export function Packages() {
   return (
-    <section id="packages" className="bg-bg px-5 py-20 md:px-8 md:py-28">
+    <section id="packages" className="cv-auto bg-bg px-5 py-20 md:px-8 md:py-28">
       <div className="mx-auto max-w-6xl">
         <Reveal>
           <p className="text-sm font-semibold uppercase tracking-[0.14em] text-sea">
@@ -64,7 +64,7 @@ export function Packages() {
           {packages.map((pkg) => (
             <StaggerItem key={pkg.name}>
               <article
-                className={`flex h-full flex-col border p-7 transition-transform duration-500 hover:-translate-y-1 ${
+                className={`flex h-full flex-col border p-7 ${
                   pkg.featured
                     ? "border-sea bg-bg-deep text-white"
                     : "border-line bg-surface text-ink"

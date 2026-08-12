@@ -1,133 +1,126 @@
 "use client";
 
 import {
-  LazyMotion,
-  domAnimation,
-  m,
-  useReducedMotion,
-  type HTMLMotionProps,
-} from "framer-motion";
-import { ReactNode } from "react";
+  Children,
+  ReactNode,
+  useEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+} from "react";
 
-export function MotionProvider({ children }: { children: ReactNode }) {
-  return (
-    <LazyMotion features={domAnimation} strict>
-      {children}
-    </LazyMotion>
-  );
+function useInViewOnce<T extends HTMLElement>(rootMargin = "0px 0px -6% 0px") {
+  const ref = useRef<T | null>(null);
+  const [shown, setShown] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || shown) return;
+
+    let frame = 0;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        frame = requestAnimationFrame(() => setShown(true));
+        io.disconnect();
+      },
+      { rootMargin, threshold: 0.08 },
+    );
+
+    io.observe(el);
+    return () => {
+      cancelAnimationFrame(frame);
+      io.disconnect();
+    };
+  }, [shown, rootMargin]);
+
+  return { ref, shown };
 }
 
-const ease = [0.22, 1, 0.36, 1] as const;
+export function MotionProvider({ children }: { children: ReactNode }) {
+  return <>{children}</>;
+}
 
 export function Reveal({
   children,
-  className,
-  delay = 0,
-  y = 28,
-  once = true,
-  ...rest
-}: HTMLMotionProps<"div"> & {
-  delay?: number;
-  y?: number;
-  once?: boolean;
-}) {
-  const reduce = useReducedMotion();
-
-  return (
-    <m.div
-      className={className}
-      initial={reduce ? false : { opacity: 0, y }}
-      whileInView={reduce ? undefined : { opacity: 1, y: 0 }}
-      viewport={{ once, margin: "0px 0px -8% 0px", amount: 0.2 }}
-      transition={{ duration: 0.7, delay, ease }}
-      {...rest}
-    >
-      {children}
-    </m.div>
-  );
-}
-
-export function Stagger({
-  children,
-  className,
+  className = "",
   delay = 0,
 }: {
   children: ReactNode;
   className?: string;
   delay?: number;
 }) {
-  const reduce = useReducedMotion();
+  const { ref, shown } = useInViewOnce<HTMLDivElement>();
 
   return (
-    <m.div
-      className={className}
-      initial={reduce ? false : "hidden"}
-      whileInView={reduce ? undefined : "show"}
-      viewport={{ once: true, margin: "0px 0px -8% 0px", amount: 0.15 }}
-      variants={{
-        hidden: {},
-        show: {
-          transition: { staggerChildren: 0.1, delayChildren: delay },
-        },
-      }}
+    <div
+      ref={ref}
+      className={`reveal-el ${shown ? "is-in" : ""} ${className}`}
+      style={{ transitionDelay: `${delay}s` } as CSSProperties}
     >
       {children}
-    </m.div>
-  );
-}
-
-export function StaggerItem({
-  children,
-  className,
-}: {
-  children: ReactNode;
-  className?: string;
-}) {
-  const reduce = useReducedMotion();
-
-  return (
-    <m.div
-      className={className}
-      variants={
-        reduce
-          ? undefined
-          : {
-              hidden: { opacity: 0, y: 22 },
-              show: {
-                opacity: 1,
-                y: 0,
-                transition: { duration: 0.65, ease },
-              },
-            }
-      }
-    >
-      {children}
-    </m.div>
+    </div>
   );
 }
 
 export function FadeScale({
   children,
-  className,
+  className = "",
   delay = 0,
 }: {
   children: ReactNode;
   className?: string;
   delay?: number;
 }) {
-  const reduce = useReducedMotion();
+  const { ref, shown } = useInViewOnce<HTMLDivElement>();
 
   return (
-    <m.div
-      className={className}
-      initial={reduce ? false : { opacity: 0, scale: 0.96 }}
-      whileInView={reduce ? undefined : { opacity: 1, scale: 1 }}
-      viewport={{ once: true, margin: "0px 0px -10% 0px" }}
-      transition={{ duration: 0.8, delay, ease }}
+    <div
+      ref={ref}
+      className={`reveal-scale ${shown ? "is-in" : ""} ${className}`}
+      style={{ transitionDelay: `${delay}s` } as CSSProperties}
     >
       {children}
-    </m.div>
+    </div>
   );
 }
 
-export { m };
+export function Stagger({
+  children,
+  className = "",
+  delay = 0,
+}: {
+  children: ReactNode;
+  className?: string;
+  delay?: number;
+}) {
+  const { ref, shown } = useInViewOnce<HTMLDivElement>("0px 0px -4% 0px");
+
+  return (
+    <div
+      ref={ref}
+      className={`stagger ${shown ? "is-in" : ""} ${className}`}
+      style={{ "--stagger-base": `${delay}s` } as CSSProperties}
+    >
+      {Children.map(children, (child, i) => (
+        <div
+          className="stagger-item"
+          style={{ transitionDelay: `calc(var(--stagger-base) + ${i * 0.07}s)` }}
+        >
+          {child}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/** Kept for API compatibility — Stagger wraps children already */
+export function StaggerItem({
+  children,
+  className = "",
+}: {
+  children: ReactNode;
+  className?: string;
+}) {
+  return <div className={className}>{children}</div>;
+}

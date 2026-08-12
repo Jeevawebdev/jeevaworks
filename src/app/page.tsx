@@ -1,4 +1,3 @@
-import { MotionProvider } from "@/components/motion";
 import { Header } from "@/components/Header";
 import { Hero } from "@/components/Hero";
 import { ForWhom } from "@/components/ForWhom";
@@ -13,7 +12,7 @@ import { WhatsAppFab } from "@/components/WhatsAppFab";
 
 export default function Home() {
   return (
-    <MotionProvider>
+    <>
       <Header />
       <main className="flex-1">
         <Hero />
@@ -27,6 +26,6 @@ export default function Home() {
       </main>
       <Footer />
       <WhatsAppFab />
-    </MotionProvider>
+    </>
   );
 }

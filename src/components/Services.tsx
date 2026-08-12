@@ -32,7 +32,7 @@ const services = [
 
 export function Services() {
   return (
-    <section id="services" className="bg-bg px-5 py-20 md:px-8 md:py-28">
+    <section id="services" className="cv-auto bg-bg px-5 py-20 md:px-8 md:py-28">
       <div className="mx-auto max-w-6xl">
         <Reveal>
           <p className="text-sm font-semibold uppercase tracking-[0.14em] text-sea">
@@ -47,20 +47,21 @@ export function Services() {
           </p>
         </Reveal>
 
-        <Stagger className="mt-14 grid gap-8 sm:grid-cols-2" delay={0.05}>
+        <Stagger className="mt-14 grid gap-8 sm:grid-cols-2" delay={0.04}>
           {services.map((item, i) => (
             <StaggerItem key={item.title}>
-              <article className="group overflow-hidden border border-line bg-surface transition-transform duration-500 will-change-transform hover:-translate-y-1">
-                <div className="relative aspect-[16/10] overflow-hidden">
+              <article className="overflow-hidden border border-line bg-surface">
+                <div className="relative aspect-[16/10] overflow-hidden bg-sea-soft">
                   <Image
                     src={item.image}
                     alt={item.alt}
                     fill
                     sizes="(max-width: 768px) 100vw, 50vw"
-                    className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                    quality={70}
+                    className="object-cover"
+                    quality={60}
+                    loading="lazy"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
                   <span className="absolute bottom-3 left-4 text-sm font-medium text-white/90">
                     0{i + 1}
                   </span>

@@ -25,7 +25,7 @@ export function Contact() {
   }
 
   return (
-    <section id="contact" className="bg-bg px-5 py-20 md:px-8 md:py-28">
+    <section id="contact" className="cv-auto bg-bg px-5 py-20 md:px-8 md:py-28">
       <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-2">
         <Reveal>
           <p className="text-sm font-semibold uppercase tracking-[0.14em] text-sea">

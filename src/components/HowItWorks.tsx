@@ -19,7 +19,7 @@ const steps = [
 
 export function HowItWorks() {
   return (
-    <section id="how" className="bg-sea-soft px-5 py-20 md:px-8 md:py-28">
+    <section id="how" className="cv-auto bg-sea-soft px-5 py-20 md:px-8 md:py-28">
       <div className="mx-auto max-w-6xl">
         <Reveal>
           <p className="text-sm font-semibold uppercase tracking-[0.14em] text-sea">
@@ -33,7 +33,7 @@ export function HowItWorks() {
         <Stagger className="mt-14 grid gap-8 md:grid-cols-3" delay={0.05}>
           {steps.map((step, i) => (
             <StaggerItem key={step.title}>
-              <div className="h-full border border-sea/15 bg-white/70 p-6 backdrop-blur-sm transition-transform duration-500 hover:-translate-y-1">
+              <div className="h-full border border-sea/15 bg-white p-6">
                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-sea text-sm font-bold text-white">
                   {i + 1}
                 </div>

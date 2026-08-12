@@ -5,7 +5,7 @@ import { Reveal, FadeScale } from "@/components/motion";
 
 export function VisualStory() {
   return (
-    <section className="bg-bg px-5 py-16 md:px-8 md:py-24">
+    <section className="cv-auto bg-bg px-5 py-16 md:px-8 md:py-24">
       <div className="mx-auto max-w-6xl">
         <Reveal>
           <p className="text-sm font-semibold uppercase tracking-[0.14em] text-sea">
@@ -18,14 +18,15 @@ export function VisualStory() {
         </Reveal>
 
         <div className="mt-10 grid gap-4 md:grid-cols-12 md:grid-rows-2">
-          <FadeScale className="relative md:col-span-7 md:row-span-2 min-h-[280px] md:min-h-[420px] overflow-hidden">
+          <FadeScale className="relative min-h-[280px] overflow-hidden md:col-span-7 md:row-span-2 md:min-h-[420px]">
             <Image
               src="/images/rural-town.jpg"
               alt="Rural Tamil Nadu town ready for digital growth"
               fill
               sizes="(max-width: 768px) 100vw, 60vw"
-              className="object-cover transition-transform duration-700 hover:scale-[1.03]"
-              quality={72}
+              className="object-cover"
+              quality={60}
+              loading="lazy"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/10 to-transparent" />
             <p className="absolute bottom-5 left-5 right-5 font-[family-name:var(--font-display)] text-2xl font-semibold text-white md:text-3xl">
@@ -34,16 +35,17 @@ export function VisualStory() {
           </FadeScale>
 
           <FadeScale
-            delay={0.1}
-            className="relative md:col-span-5 min-h-[200px] overflow-hidden"
+            delay={0.08}
+            className="relative min-h-[200px] overflow-hidden md:col-span-5"
           >
             <Image
               src="/images/local-shop.jpg"
               alt="Local shop interior"
               fill
               sizes="(max-width: 768px) 100vw, 40vw"
-              className="object-cover transition-transform duration-700 hover:scale-[1.03]"
-              quality={70}
+              className="object-cover"
+              quality={55}
+              loading="lazy"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/55 to-transparent" />
             <p className="absolute bottom-4 left-4 text-lg font-semibold text-white">
@@ -52,16 +54,17 @@ export function VisualStory() {
           </FadeScale>
 
           <FadeScale
-            delay={0.18}
-            className="relative md:col-span-5 min-h-[200px] overflow-hidden"
+            delay={0.14}
+            className="relative min-h-[200px] overflow-hidden md:col-span-5"
           >
             <Image
               src="/images/phone-web.jpg"
               alt="Website on phone"
               fill
               sizes="(max-width: 768px) 100vw, 40vw"
-              className="object-cover transition-transform duration-700 hover:scale-[1.03]"
-              quality={70}
+              className="object-cover"
+              quality={55}
+              loading="lazy"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/55 to-transparent" />
             <p className="absolute bottom-4 left-4 text-lg font-semibold text-white">
