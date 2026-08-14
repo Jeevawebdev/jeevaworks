@@ -9,7 +9,7 @@ import { Packages } from "@/components/Packages";
 import { About } from "@/components/About";
 import { Contact } from "@/components/Contact";
 import { Footer } from "@/components/Footer";
-import { WhatsAppFab } from "@/components/WhatsAppFab";
+import { Chatbot } from "@/components/Chatbot";
 import { ScrollProgress } from "@/components/ScrollProgress";
 
 export default function Home() {
@@ -29,7 +29,7 @@ export default function Home() {
         <Contact />
       </main>
       <Footer />
-      <WhatsAppFab />
+      <Chatbot />
     </>
   );
 }
